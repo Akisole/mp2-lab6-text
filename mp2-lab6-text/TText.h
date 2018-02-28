@@ -1,12 +1,20 @@
 #include "Stack.h"
 #include <string.h>
 
+#include <fstream>
+#include <iostream>
+
 class TLink {
 public:
 	char str[80];
 	TLink *pNext, *pDown;
 
 	TLink (char *s = NULL, TLink *pN = NULL, TLink *pD = NULL) {
+		pNext=pN;
+		pDown=pD;
+		if(s==NULL)
+			str[0] = '\0';
+		else strcpy(str,s);
 		
 	}
 	~TLink();
@@ -17,8 +25,9 @@ public:
 class TText {
 	TLink *pFirsr, *pCurr;
 	TStack<TLink*> st;
+	int lvl;
 public:
-	TText();
+	TText(){}
 
 	void GoNextLink() {
 		if (pCurr->pNext!=NULL) {
@@ -69,5 +78,61 @@ public:
 		}
 	}
 
+	TLink* ReadRec (std::ifstream& file) {
+		char buf[80];
+		TLink *tmp, *ftmp=NULL;
+		while (!file.eof()) {
+			file.getline(buf, 80, '\n');
+			if(buf[0] == '}')
+				break;
+			else if (buf[0] == '{')
+				tmp -> pDown = ReadRec(file);
+			else {
+				if(ftmp == NULL){
+					ftmp = new TLink(buf);
+					tmp = ftmp;
+				}
+				else {
+					tmp -> pNext = new TLink(buf);
+					tmp = tmp -> pNext;
+				}
+			}
+		}
+		return ftmp;
+	}
+	void Read (char *fn) {
+		std::ifstream ifs(fn);
+		pFirsr = ReadRec(ifs);
+	}
 
+	void PrintRec (TLink *tmp) {
+		if(tmp != NULL) {
+			for(int i=0; i<lvl; i++)
+				std::cout << ' ';
+			std::cout << tmp -> str << std::endl;
+			lvl++;
+			PrintRec(tmp->pDown);
+			lvl--;
+			PrintRec(tmp->pNext);
+		}
+	}
+	void Print() {
+		lvl = 0;
+		PrintRec(pFirsr);
+	}
+
+	void SaveRec (TLink *tmp, std::ofstream &file){
+		file << tmp->str << '\n';
+		if(tmp->pDown != NULL) {
+			file << "{\n";
+			SaveRec(tmp->pDown, file);
+			file << "}\n";
+		}
+		if(tmp->pNext != NULL)
+			SaveRec(tmp->pNext, file);
+	}
+	void Save (char *fn) {
+		std::ofstream ofs(fn);
+		SaveRec(pFirsr, ofs);
+	}
 };

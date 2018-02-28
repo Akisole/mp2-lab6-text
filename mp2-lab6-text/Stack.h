@@ -5,7 +5,7 @@ class TStack {
 	int size;			//Число элементов в стеке
 	T* array;	
 public:
-	TStack<T> (int _msize) {
+	TStack<T> (int _msize=20) {
 		if (_msize<0)
 			throw -1;
 		array=new T[_msize];
