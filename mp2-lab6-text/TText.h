@@ -15,10 +15,8 @@ public:
 		if(s==NULL)
 			str[0] = '\0';
 		else strcpy(str,s);
-		
 	}
 	~TLink(){}
-
 };
 
 class TText {

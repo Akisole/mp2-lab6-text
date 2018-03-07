@@ -2,15 +2,14 @@
 using namespace std;
 
 void main () {
+	char name[] ="file.txt";
 	setlocale(LC_ALL, "rus");
 
 	TText Text;
-	
-	char name[] ="file.txt";
 	Text.Read(name);
+
 	Text.Print();
-	cout << endl;
-	cout << "Выберите действие: 1.GoNex 2.GoDown 3.GoPrev 4.Ins 5.Del 6.Save 7.Exit\n" << "Пункт: ";
+	cout << endl << "Выберите действие: 1.GoNex 2.GoDown 3.GoPrev 4.Ins 5.Del 6.Save 7.Exit\n" << "Пункт: ";
 	int m=0, tmp1, tmp2;
 	while (m != 7) {
 		switch (m) {
