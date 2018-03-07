@@ -17,10 +17,9 @@ public:
 		else strcpy(str,s);
 		
 	}
-	~TLink();
+	~TLink(){}
 
 };
-
 
 class TText {
 	TLink *pFirsr, *pCurr;
@@ -103,12 +102,19 @@ public:
 	void Read (char *fn) {
 		std::ifstream ifs(fn);
 		pFirsr = ReadRec(ifs);
+		pCurr = pFirsr;
 	}
 
 	void PrintRec (TLink *tmp) {
 		if(tmp != NULL) {
-			for(int i=0; i<lvl; i++)
-				std::cout << ' ';
+			if (pCurr == tmp){
+				std::cout << '>';
+				for(int i=0; i<lvl+1; i++)
+					std::cout << ' ';
+			}
+			else 
+				for(int i=0; i<lvl+2; i++)
+					std::cout << ' ';
 			std::cout << tmp -> str << std::endl;
 			lvl++;
 			PrintRec(tmp->pDown);
@@ -135,4 +141,38 @@ public:
 		std::ofstream ofs(fn);
 		SaveRec(pFirsr, ofs);
 	}
+
+	TLink* CopyRec(TLink *tmp) {
+		TLink *pN=NULL, *pD=NULL;
+		if(tmp->pDown != NULL)
+			pD = CopyRec(tmp->pDown);
+		if(tmp->pNext != NULL)
+			pN = CopyRec(tmp->pNext);
+		TLink *zvn = new TLink(tmp->str, pN, pD);
+		return zvn;
+	}
+	TLink* Copy() {
+		return(pFirsr);
+	}
+
+	//Итерирование
+	void Reset() {
+		pCurr = pFirsr;
+		st.Clear();
+		st.Push(pCurr);
+		if (pFirsr->pDown != NULL)
+			st.Push(pFirsr->pDown);
+		if (pFirsr->pNext != NULL)
+			st.Push(pFirsr->pNext);
+	}
+	void GoNext() {
+		pCurr = st.Pop();
+		if(pCurr != pFirsr) {
+			if(pCurr->pNext != NULL)
+				st.Push(pCurr->pNext);
+			if(pCurr->pDown != NULL)
+				st.Push(pCurr->pDown);
+		}
+	}
+	//IsEnd
 };
