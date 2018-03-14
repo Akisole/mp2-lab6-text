@@ -1,23 +1,8 @@
 #include "Stack.h"
-#include <string.h>
-
 #include <fstream>
-#include <iostream>
 
-class TLink {
-public:
-	char str[80];
-	TLink *pNext, *pDown;
+#include "TMem.h"
 
-	TLink (char *s = NULL, TLink *pN = NULL, TLink *pD = NULL) {
-		pNext=pN;
-		pDown=pD;
-		if(s==NULL)
-			str[0] = '\0';
-		else strcpy(str,s);
-	}
-	~TLink(){}
-};
 
 class TText {
 	TLink *pFirsr, *pCurr;
@@ -25,6 +10,9 @@ class TText {
 	int lvl;
 public:
 	TText(){}
+	TLink* GetCurr() {
+		return pCurr;
+	}
 
 	void GoNextLink() {
 		if (pCurr->pNext!=NULL) {
@@ -172,5 +160,13 @@ public:
 				st.Push(pCurr->pDown);
 		}
 	}
-	//IsEnd
+	int IsEnd() {
+		int i;
+		if  (st.IsEmpty() == 1)
+			i=1;
+		else
+			i=2;
+		return i;
+	}
+
 };

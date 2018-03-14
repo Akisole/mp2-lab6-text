@@ -1,10 +1,14 @@
 #include "TText.h"
 using namespace std;
 
+
+TMem TLink::mem;
+
 void main () {
 	char name[] ="file.txt";
 	setlocale(LC_ALL, "rus");
 
+	TLink::InitMem(20);
 	TText Text;
 	Text.Read(name);
 
@@ -79,5 +83,10 @@ void main () {
 		}
 		cin >> m;
 	}
-
+	cout << "Список свободных: " << endl;
+	TLink::PrintFree();
+	cout << "Чистка памяти. " << endl;
+	TLink::MemClean(Text);
+	cout << "Список свободных: " << endl;
+	TLink::PrintFree();
 }

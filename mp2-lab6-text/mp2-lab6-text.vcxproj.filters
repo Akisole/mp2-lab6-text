@@ -21,10 +21,16 @@
     <ClInclude Include="TText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TMem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TMem.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
